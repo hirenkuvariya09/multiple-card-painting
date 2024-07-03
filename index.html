@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FLOWTEK HYDRAULIC</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-size: 16px; /* Base font size */
+            color: #333; /* Base text color */
+            background-color: #f8f9fa; /* Body background color */
+        }
+        .container {
+            max-width: 800px; /* Limit container width */
+        }
+        .card-container {
+            display: none;
+            
+            column-count: 1; /* Single column by default */
+            column-gap: 20px;
+            margin-top: 20px;
+        }
+        .card {
+            margin-bottom: 20px; /* Space between cards */
+            background-color: #fff; /* Card background color */
+            border: 1px solid #ddd; /* Card border */
+            border-radius: 8px; /* Card border radius */
+            padding: 15px; /* Card padding */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Card box shadow */
+            page-break-inside: avoid; /* Avoid page breaks inside cards */
+        }
+        .card-header {
+            background-color: #90b4db; /* Header background color */
+            color: white; /* Header text color */
+            font-size: 1.5rem; /* Header font size */
+           /* Header padding */
+            border-radius: 8px 8px 0 0; /* Header border radius */
+            margin-bottom: 15px; /* Space below header */
+        }
+        .card-body {
+            font-size: 1.2rem; /* Body font size */
+            line-height: 1.6; /* Body line height */
+        }
+        @media print {
+            .container, .form, #printBtn, #addItemBtn {
+                display: none;
+            }
+            .card-container {
+                display: block;
+                column-count: 2; /* Two columns for print after first 5 copies */
+                column-gap: 40px;
+                margin-top: 0;
+            }
+            .card {
+                width: 100%; /* Full width for print */
+                margin-bottom: 20px; /* Space between cards */
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-5">
+        <form id="dataForm">
+            <h1 class="mb-4 text-center">FLOWTEK HYDRAULIC & ENGINEERS</h1>
+            <div class="form-group">
+                <label for="item">Item</label>
+                <input type="text" class="form-control" id="item" placeholder="Enter item name">
+            </div>
+            <div class="form-group">
+                <label for="qty">Quantity</label>
+                <input type="number" class="form-control" id="qty" placeholder="Enter quantity">
+            </div>
+            <div class="form-group">
+                <label for="inv_cases">Inv/Cases</label>
+                <input type="text" class="form-control" id="inv_cases" placeholder="Enter inventory or cases">
+            </div>
+            <div class="form-group">
+                <label for="numCopies">Number of Copies</label>
+                <input type="number" class="form-control" id="numCopies" placeholder="Enter number of copies">
+            </div>
+            <button type="button" class="btn btn-primary btn-block" id="addItemBtn">Add Item</button>
+        </form>
+        <button id="printBtn" class="btn btn-secondary btn-block mt-3">Print</button>
+    </div>
+
+    <div class="card-container" id="cardContainer"></div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        document.getElementById('addItemBtn').addEventListener('click', function() {
+            // Get form data
+            var item = document.getElementById('item').value;
+            var qty = document.getElementById('qty').value;
+            var invCases = document.getElementById('inv_cases').value;
+            var numCopies = parseInt(document.getElementById('numCopies').value);
+
+            // Validate number of copies
+            if (isNaN(numCopies) || numCopies <= 0 || numCopies > 12) {
+                alert('Please enter a valid number of copies (1 to 12).');
+                return;
+            }
+
+            // Clear existing cards if any
+            var cardContainer = document.getElementById('cardContainer');
+            cardContainer.innerHTML = '';
+
+            // Create new card elements and print copies
+            var totalCopies = Math.min(numCopies, 12); // Maximum 10 copies per page
+            for (var i = 0; i < totalCopies; i++) {
+                var newCard = document.createElement('div');
+                newCard.className = 'card';
+                newCard.innerHTML = `
+                    <div class="card-header" style="background-color:  #d2e8fa; color: black ;"><h2>FLOWTEK HYDRAULIC & ENGINEERS</h2></div>
+                    <div class="card-body">
+                        <h3><strong>Item:</strong> ${item}</h3>
+                        <h3><strong>Quantity:</strong> ${qty}</h3>
+                        <h3><strong>Inv/Cases:</strong> ${invCases}</h3>
+                    </div>
+                `;
+                cardContainer.appendChild(newCard);
+            }
+
+            // Show card container
+            cardContainer.style.display = 'block';
+
+            // Trigger print after a slight delay to ensure content is rendered
+            setTimeout(function() {
+                window.print();
+            }, 100);
+        });
+    </script>
+</body>
+</html>
